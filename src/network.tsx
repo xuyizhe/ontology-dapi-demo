@@ -2,6 +2,8 @@ import { client } from 'ontology-dapi';
 import * as React from 'react';
 import { RouterProps } from 'react-router';
 
+import * as PrivateChain from './constants/private-chain';
+
 export const Network: React.SFC<RouterProps> = (props) => {
   async function onGetBlockHeight() {
     const height = await client.api.network.getBlockHeight();
@@ -15,14 +17,22 @@ export const Network: React.SFC<RouterProps> = (props) => {
 
   async function onGetTransaction() {
     const transaction = await client.api.network.getTransaction({
-      txHash: '314e24e5bb0bd88852b2f13e673e5dcdfd53bdab909de8b9812644d6871bc05f'
+      txHash: PrivateChain.txHash
     });
     // tslint:disable-next-line:no-console
     console.log('onGetTransaction: ' + JSON.stringify(transaction));
   }
 
   async function onGetBalance() {
-    const balance = await client.api.network.getBalance({ address: 'AcyLq3tokVpkMBMLALVMWRdVJ83TTgBUwU' });
+    const address = await client.api.asset.getAccount();
+
+    // tslint:disable-next-line:no-console
+    console.log(address);
+
+    const balance = await client.api.network.getBalance({
+      address
+    });
+
     alert('onGetBalance: ' + JSON.stringify(balance));
   }
 

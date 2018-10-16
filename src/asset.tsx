@@ -3,6 +3,8 @@ import * as React from 'react';
 import { Field, Form } from 'react-final-form';
 import { RouterProps } from 'react-router';
 
+import * as PrivateChain from './constants/private-chain';
+
 export const Asset: React.SFC<RouterProps> = (props) => {
   async function onGetAccount() {
     const account = await client.api.asset.getAccount();
@@ -38,7 +40,7 @@ export const Asset: React.SFC<RouterProps> = (props) => {
         initialValues={{
           amount: '10',
           asset: 'ONT',
-          recipient: 'AXCyYV4DNmmsqZn9qJEqHqpacVxcr7X7ns'
+          recipient: PrivateChain.address
         }}
         onSubmit={onMakeTransfer}
         render={({ handleSubmit }) => (

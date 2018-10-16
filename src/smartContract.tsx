@@ -5,6 +5,8 @@ import { Field, Form } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import { RouterProps } from 'react-router';
 
+import * as PrivateChain from './constants/private-chain';
+
 // tslint:disable:max-line-length
 export const SmartContract: React.SFC<RouterProps> = (props) => {
   async function onScCall(values: any) {
@@ -27,6 +29,13 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       });
       // tslint:disable-next-line:no-console
       console.log('onScCall finished, result:' + JSON.stringify(result));
+
+      const transaction = await client.api.network.getTransaction({
+        txHash: result.transaction
+      });
+
+      // tslint:disable-next-line:no-console
+      console.log('onGetTransaction: ' + JSON.stringify(transaction));
     } catch (e) {
       alert('onScCall canceled');
       // tslint:disable-next-line:no-console
@@ -105,11 +114,11 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       <h2>ScCall</h2>
       <Form
         initialValues={{
-          contract: 'bd76a5917e0444d4b615b87c5912362164676dc7',
-          method: 'Add',
+          contract: PrivateChain.contract,
+          method: 'Hello',
           gasPrice: '500',
           gasLimit: '100000000',
-          parameters: [{ type: 'Integer', value: '5' }, { type: 'Integer', value: '4' }]
+          parameters: [{ type: 'String', value: 'World' }]
         }}
         mutators={Object.assign({}, arrayMutators) as any}
         onSubmit={onScCall}
@@ -169,7 +178,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       <h2>ScCall read</h2>
       <Form
         initialValues={{
-          contract: 'bd76a5917e0444d4b615b87c5912362164676dc7',
+          contract: PrivateChain.contract,
           method: 'Add',
           parameters: [{ type: 'Integer', value: '5' }, { type: 'Integer', value: '4' }]
         }}
